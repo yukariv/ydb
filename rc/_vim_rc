@@ -1,9 +1,0 @@
-set hidden "Move between buffers without save
-set noeol "Do not add automatic new line at the end of file
-set incsearch
-set hlsearch
-
-set tabstop=4
-set expandtab
-set shiftwidth=2
-
