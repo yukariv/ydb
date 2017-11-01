@@ -119,3 +119,4 @@ fi
 # yukariv settings:
 export DISPLAY=:0
 alias g=gvim
+alias fcpp='find . -regex ".*\.\(cpp\|h\)" | xargs grep $@'
