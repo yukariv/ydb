@@ -3,7 +3,7 @@
 
 // API:
 
-const async = makeGenerator=>(()=>{
+const async = function (makeGenerator){
   let generator = makeGenerator.apply(this, arguments);
   let handle = result=>{
     if (result.done) return Promise.resolve(result.value);
@@ -13,15 +13,21 @@ const async = makeGenerator=>(()=>{
   };
   try { return handle(generator.next()); }
   catch (ex) { return Promise.reject(ex); }
-})();
+};
 
 const delay = t=>new Promise(resolve=>setTimeout(resolve, t));
 
 // Sample usage:
 
-async(function*my_generator(){
-  yield delay(1000);
-  console.log(1);
-  yield delay(2000);
-  return 7;
-}).then(rc=>console.log(rc));
+function*a1(t1, t2, msg, rc){
+  yield delay(t1||1000);
+  console.log(msg||1);
+  yield delay(t2||2000);
+  return rc||7;
+}
+
+async(function*(){
+    let rc = yield async(a1, 1000, 1000, 'MSG', 8);
+    console.log('rc: ', rc);
+    rc = yield async(a1);
+});
