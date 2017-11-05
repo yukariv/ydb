@@ -26,8 +26,13 @@ function*a1(t1, t2, msg, rc){
   return rc||7;
 }
 
+const a2 = i=>async(function*(){
+    yield delay(1000);
+    return i;
+});
+
 async(function*(){
     let rc = yield async(a1, 1000, 1000, 'MSG', 8);
     console.log('rc: ', rc);
-    rc = yield async(a1);
+    console.log(yield a2(yield async(a1)));
 });
