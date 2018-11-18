@@ -1,0 +1,16 @@
+{
+  "name": "interviews",
+  "version": "0.0.1",
+  "description": "Questions, functions and other stuff for interviews",
+  "main": "interviews.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "mocha"
+  },
+  "author": "yuval",
+  "license": "",
+  "devDependencies": {},
+  "dependencies": {
+    "microtime": "^2.1.8"
+  }
+}
