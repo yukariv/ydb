@@ -2,38 +2,37 @@
 'use strict';
 
 var assert = require('assert');
-describe('myhash', function() {
-  const Hash = require('./myhash.js').Hash;
-  it('basic', function() {
-    let h = new Hash();
-    assert.deepEqual(h.entries(), []);
-    h.first = 7;
-    h.second = 8;
-    assert.equal(h.first, 7);
-    assert.equal(h.second, 8);
-    assert.equal(h.somethingelse, undefined);
-    assert.deepEqual(h.entries(), [['first', 7], ['second', 8]]);
-  });
-  it('global set', ()=>{
-    let h = new Hash();
-    h.first = 7;
-    h.second = 8;
-    h.set(9);
-    assert.equal(h.first, 9);
-    assert.equal(h.second, 9);
-    assert.equal(h.somethingelse, undefined);
-    assert.deepEqual(h.entries(), [['first', 9], ['second', 9]]);
-    h.second = 1;
-    assert.equal(h.first, 9);
-    assert.equal(h.second, 1);
-    assert.equal(h.somethingelse, undefined);
-    assert.deepEqual(h.entries(), [['first', 9], ['second', 1]]);
-
-  });
-});
-
 describe('interviews', function(){
   const interviews = require('./interviews.js');
+  describe('myhash', function() {
+    const Hash = interviews.Hash;
+    it('basic', function() {
+      let h = new Hash();
+      assert.deepEqual(h.entries(), []);
+      h.first = 7;
+      h.second = 8;
+      assert.equal(h.first, 7);
+      assert.equal(h.second, 8);
+      assert.equal(h.somethingelse, undefined);
+      assert.deepEqual(h.entries(), [['first', 7], ['second', 8]]);
+    });
+    it('global set', ()=>{
+      let h = new Hash();
+      h['first'] = 7;
+      h.second = 8;
+      h.set(9);
+      assert.equal(h.first, 9);
+      assert.equal(h.second, 9);
+      assert.equal(h.somethingelse, undefined);
+      assert.deepEqual(h.entries(), [['first', 9], ['second', 9]]);
+      h.second = 1;
+      assert.equal(h.first, 9);
+      assert.equal(h.second, 1);
+      assert.equal(h.somethingelse, undefined);
+      assert.deepEqual(h.entries(), [['first', 9], ['second', 1]]);
+
+    });
+  });
   describe('dividers', function(){
     const t = (name, num, dividors)=>it(name, ()=>assert.deepEqual(interviews.dividers(num), dividors));
     t('basic', 60, [2, 2, 3, 5]);
@@ -54,5 +53,24 @@ describe('interviews', function(){
     t('minus ws', ' -1234 ', -1234);
     t('minus ws tab', ' \t-1234', -1234);
     t('minus ws tab2', '\t -1234', -1234);
+  });
+  describe('InsersionSortLocation', function(){
+    const _t = recurtion=>{
+      const t = (name, arr, num, idx)=>it(name, ()=>{
+        interviews.recurtion = recurtion;
+        assert.deepEqual(interviews.InsersionSortLocation(arr, 0, arr.length-1, num), idx);
+      });
+      let tArr = [1, 4, 7, 11, 15];
+      t('after the first', tArr, 2, 1);
+      t('mid', tArr, 8, 3);
+      t('end', tArr, 12, 4);
+      t('start', tArr, 0, 0);
+    };
+    describe('loop', ()=>_t(false));
+    describe('recurtion', ()=>_t(true));
+  });
+  describe('InsersionSort', function(){
+    const t = (name, i, o)=>it(name, ()=>assert.deepEqual(interviews.InsersionSort(i), o));
+//    t('basic', [2, 1, 3, 0], [0, 1, 2, 3]);
   });
 });
