@@ -4,6 +4,7 @@
 var assert = require('assert');
 describe('interviews', function(){
   const interviews = require('./interviews.js');
+  interviews.set_debug(true);
   describe('myhash', function() {
     const Hash = interviews.Hash;
     it('basic', function() {
@@ -18,7 +19,8 @@ describe('interviews', function(){
     });
     it('global set', ()=>{
       let h = new Hash();
-      h['first'] = 7;
+      /*jshint -W069 */
+      h['first'] = 7; /*jshint +W069 */
       h.second = 8;
       h.set(9);
       assert.equal(h.first, 9);
