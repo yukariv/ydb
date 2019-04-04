@@ -5,7 +5,16 @@ const microtime = require('microtime');
 
 const E = exports;
 
+// Global debug logic
 let g_debug;
+E.debug = function(){
+  if (!g_debug)
+    return;
+  console.log(Array.prototype.slice.call(arguments));
+};
+E.set_debug = function(val){ g_debug = val; };
+Hash.prototype.isMember = function(prop){ return this._hash[prop] instanceof Tval; };
+E.Hash = Hash;
 
 // Function that get prims elements of a number and prints them 60: outpuut should be 2, 2, 3, 5.
 // In this case, the lang helps remove the unneeded ','.
@@ -31,7 +40,6 @@ E.dividers = num=>{
 };
 
 // convert string to int and signed. First non-digit is a stop
-
 E.str2int = str=>{
   let num = 0;
   let neg = false;
@@ -61,29 +69,19 @@ E.str2int = str=>{
 
 // Binary search in a sorrted array (arr), where num should be added in order to keep the array sorted
 E.InsersionSortLocation_loop = (arr, s, e, num)=>{
-  let m = Math.floor((s+e)/2);
   E.debug('InsersionSortLocation: num:', num, arr);
-  while (m<=e && m>=s)
+  let m;
+  while (s<=e)
   {
+    m = Math.floor((s+e)/2);
     E.debug(`${num}: s:${s}(${arr[s]}), m:${m}(${arr[m]}), e: ${e}(${arr[e]})`);
     if (arr[m] < num)
-    {
-      if (s==m)
-        s = m+1;
-      else
-        s = m;
-    }
+      s = m+1;
     else
-    {
-      if (e==m)
-        e = m-1;
-      else
-        e = m;
-    }
-    m = Math.floor((s+e)/2);
+      e = m-1;
   }
   E.debug(`end: num: ${num}, s:${s}(${arr[s]}), m:${m}(${arr[m]}), e: ${e}(${arr[e]})`);
-  return m+1;
+  return m;
 };
 
 E.InsersionSortLocation_recursion = (arr, s, e, num)=>{
@@ -112,9 +110,16 @@ E.InsersionSort = arr=>{
   let sl = 1; // Sorted length
   while (sl < arr.length)
   {
-
+    let i = E.InsersionSortLocation(arr, 0, sl-1, arr[sl]);
+    E.debug(`InsertSort(${arr}): Move element ${sl}(${arr[sl]}) to index ${i}`);
+    // XXX yuval: Performance: Interesting to talk about it
+    let e = arr[sl];
+    arr.splice(sl, 1);
+    arr.splice(i, 0, e);
+    sl++;
+    E.debug(`InsertSort(${arr})`);
   }
-  return [1, 1, 1, 1];
+  return arr;
 };
 
 function Tval(val){
@@ -158,11 +163,59 @@ Hash.prototype.set = function(val) {
   this._data.tval = new Tval(val);
   E.debug(`Hash.set(${val}), ${this._data.tval.timestamp}`);
 };
-E.debug = function(){
-  if (!g_debug)
-    return;
-  console.log(Array.prototype.slice.call(arguments));
+
+E.BubbleSort = arr=>{
+  let found;
+  do
+  {
+    found = false;
+    for (let i = 0; i < arr.length-1; i++){
+      E.debug(`bubbleSort(${arr}, i: ${i} ${arr[i]} > ${arr[i+1]} ? ${arr[i] > arr[i+1]}`);
+      if (arr[i] > arr[i+1])
+      {
+        E.debug(`swapping ${arr[i]} with ${arr[i+1]}`);
+        let t = arr[i];
+        arr[i] = arr[i+1];
+        arr[i+1] = t;
+        found = true;
+      }
+    }
+  } while(found);
+  return arr;
 };
-E.set_debug = function(val){ g_debug = val; };
-Hash.prototype.isMember = function(prop){ return this._hash[prop] instanceof Tval; };
-E.Hash = Hash;
+
+let strcmp_cw = (n, ns, h, hs)=>
+{
+  if (ns.length-ns < h.length-hs)
+    return false;
+//  if ([ns] != '*' && n[ns] !=  
+};
+
+
+E.strcmp_cw = (n, h)=>strcmp_cw(n, 0, 0);
+
+  /*
+  let ii = 0; oi = 0;
+  let qm = 0, ast = false;
+  while (ii < i.length && oi < o.length)
+  {
+    if ((i[ii] == '?'){
+      if (ast) // '?' directly after asterisk is meaningless. Ignore
+        continue;
+      qm++;
+      ii++;
+      continue;
+    }
+    if (i[ii] == '*'){
+      if (qm>0) // asterisk after qm make the qm redundent
+        qm = 0;
+      ast = true;
+
+
+    if (ast || qm)
+    {
+      if (i[ii] == o[oi])
+
+    }
+
+  }*/

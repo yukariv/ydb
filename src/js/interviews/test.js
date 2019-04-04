@@ -4,7 +4,7 @@
 var assert = require('assert');
 describe('interviews', function(){
   const interviews = require('./interviews.js');
-  interviews.set_debug(true);
+  interviews.set_debug(false);
   describe('myhash', function() {
     const Hash = interviews.Hash;
     it('basic', function() {
@@ -71,8 +71,36 @@ describe('interviews', function(){
     describe('loop', ()=>_t(false));
     describe('recurtion', ()=>_t(true));
   });
-  describe('InsersionSort', function(){
+  describe('TESTInsersionSort', function(){
     const t = (name, i, o)=>it(name, ()=>assert.deepEqual(interviews.InsersionSort(i), o));
-//    t('basic', [2, 1, 3, 0], [0, 1, 2, 3]);
+    t('basic', [2, 1, 3, 0], [0, 1, 2, 3]);
+  });
+  describe('bubbleSort', function(){
+    const t = (name, i, o)=>it(name, ()=>assert.deepEqual(interviews.BubbleSort(i), o));
+    t('basic sort', [3, 2, 4, 1], [1, 2, 3, 4]);
+    t('sorted', [1, 2, 3, 4], [1, 2, 3, 4]);
+    t('reversed', [4, 3, 2, 1], [1, 2, 3, 4]);
+    t('repeeted numbers', [3, 3, 1, 4, 1, 2], [1, 1, 2, 3, 3, 4]);
+  });
+  describe('strcmp_cw', function(){
+    const t = (name, s1, s2, o)=>it(name, ()=>assert.equal(interviews.strcmp_cw(s1, s2), o));
+    describe('basic', function(){
+      t('matched', 'test', 'test', true);
+      t('not matched', 'test', 'Tested', false);
+      t('suffix', 'test', 'test2', false);
+      t('prefix', 'test', '1test', false);
+    });
+    describe('wildcards', function(){
+      t('prefix ast', '*val', 'yuval', true);
+      t('suffix ast', 'yu*', 'yuval', true);
+      t('ast', 'yu*l', 'yuval', true);
+      t('prefix qm', '?uval', 'yuval', true);
+      t('suffix qm', 'yuva?', 'yuval', true);
+      t('qm', 'yu?al', 'yuval', true);
+      t('qm 2chars', 'yu?l', 'yuval', false);
+      t('2qm seq', 'yu??l', 'yuval', true);
+      t('2qm ', 'y?v?l', 'yuval', true);
+      // TODO: many more
+    });
   });
 });
