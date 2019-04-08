@@ -14,8 +14,7 @@ char *prime_factors(int num)
   buf[0] = 0;
   while (i < e)
   {
-    int n = (num/i)*i;
-    if (n != num)
+    if (num%i)
     {
       i++;
       continue;
