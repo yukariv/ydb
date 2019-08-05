@@ -31,6 +31,7 @@ describe('interviews', function(){
           t('basic', str, 'name', true);
           t('basic false', str, 'nae', false);
           t('asterisk', str, 'my*montoya', true);
+          t('multi_asterisk', str, 'my**mon*to****a', true);
           t('asterisk false', str, 'my*montoa', false);
           t('asterisk+qm', str, 'my n?me*montoya', true);
           t('asterisk+qm false', str, 'my n?me*montoya', true);
