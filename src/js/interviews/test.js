@@ -5,6 +5,41 @@ var assert = require('assert');
 describe('interviews', function(){
   const interviews = require('./interviews.js');
   interviews.set_debug(false);
+  describe('wildcards', function() {
+    const wildcards = require('./wildcards.js');
+    const str = 'my name is inigo montoya, you killed my father, prepare to die';
+    describe('needle_in_haystack', function() {
+      let t = (name, haystack, n, exp)=>it(name, ()=>assert.equal(wildcards.needle_in_haystack(haystack, n), exp));
+      let h = str;
+      t('middle', h, 'name', 7);
+      t('start', h, 'my n', 4);
+      t('end', h, 'to die', 62);
+      t('questionmark', h, 'mon?oya', 24);
+      t('questionmark false', h, 'mon?toya', -1);
+      t('fail', h, 'monttoya', -1);
+      h = 'test1 test2 test3';
+      t('subfoundFirst', h, 'test1', 5);
+      t('subfoundSecond', h, 'test2', 11);
+    });
+    describe('strexist_wc', function() {
+      let tests = type=>{
+        describe(type, function() {
+          before(function(){
+            wildcards.set_type(type);
+          });
+          let t = (name, haystack, n, exp)=>it(name, ()=>assert.equal(wildcards.strexist_wc(haystack, n), exp));
+          t('basic', str, 'name', true);
+          t('basic false', str, 'nae', false);
+          t('asterisk', str, 'my*montoya', true);
+          t('asterisk false', str, 'my*montoa', false);
+          t('asterisk+qm', str, 'my n?me*montoya', true);
+          t('asterisk+qm false', str, 'my n?me*montoya', true);
+        });
+     };
+     tests('parts');
+     tests('recursive');
+    });
+  }); 
   describe('myhash', function() {
     const Hash = interviews.Hash;
     it('basic', function() {
@@ -82,6 +117,7 @@ describe('interviews', function(){
     t('reversed', [4, 3, 2, 1], [1, 2, 3, 4]);
     t('repeeted numbers', [3, 3, 1, 4, 1, 2], [1, 1, 2, 3, 3, 4]);
   });
+/*
   describe('strcmp_cw', function(){
     const t = (name, s1, s2, o)=>it(name, ()=>assert.equal(interviews.strcmp_cw(s1, s2), o));
     describe('basic', function(){
@@ -103,4 +139,5 @@ describe('interviews', function(){
       // TODO: many more
     });
   });
+*/
 });

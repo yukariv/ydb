@@ -183,39 +183,3 @@ E.BubbleSort = arr=>{
   } while(found);
   return arr;
 };
-
-let strcmp_cw = (n, ns, h, hs)=>
-{
-  if (ns.length-ns < h.length-hs)
-    return false;
-//  if ([ns] != '*' && n[ns] !=  
-};
-
-
-E.strcmp_cw = (n, h)=>strcmp_cw(n, 0, 0);
-
-  /*
-  let ii = 0; oi = 0;
-  let qm = 0, ast = false;
-  while (ii < i.length && oi < o.length)
-  {
-    if ((i[ii] == '?'){
-      if (ast) // '?' directly after asterisk is meaningless. Ignore
-        continue;
-      qm++;
-      ii++;
-      continue;
-    }
-    if (i[ii] == '*'){
-      if (qm>0) // asterisk after qm make the qm redundent
-        qm = 0;
-      ast = true;
-
-
-    if (ast || qm)
-    {
-      if (i[ii] == o[oi])
-
-    }
-
-  }*/
