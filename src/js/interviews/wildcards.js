@@ -64,35 +64,34 @@ E.strexists_wc_parts = (str, ptrn)=>{
 };
 
 // Recusive implementation:
-
-E.strexists_wc_recusive = (str, ptr)=>{
-    return E._strexists_wc_recusive(str, 0, ptr, 0);
-};
-
-E.count = 0;
-E._strexists_wc_recusive = (str, si, ptr, pi)=>{
-    E.debug(`1 ${E.count++} str: <${str}> ptr: <${ptr}>: str[${si}]=${str[si]} ptr[${pi}]=${ptr[pi]}`);
-    if (pi == ptr.length)
-        return E.debug_rc(true, '2 pi=='+pi, 'ptr.length: '+ptr.length);
-    if (si == str.length)
-        return E.debug_rc(false, '3 si=='+si, 'str.length: '+str.length);
-    if (str[si] == ptr[pi] || ptr[pi] == '?')
-    {
-        E.debug(`3 E._strexists_wc_recusive(str, ${si+1}, ptr, ${pi+1})`);
-        return E._strexists_wc_recusive(str, si+1, ptr, pi+1);
-    }
-    if (ptr[pi]=='*')
+let count = 0;
+E.strexists_wc_recusive = (str, ptr)=>function _strexists_wc_recusive(str, ptr, initial){
+	let _count = count++;
+	E.debug(`${_count} initial: ${initial} str: <${str}> ptr: <${ptr}>: str[0]=${str[0]} ptr[0]=${ptr[0]}`);
+    if (ptr.length==0)
+        return E.debug_rc(true, `${_count} End of ptr return true`);
+    if (str.length==0)
+        return E.debug_rc(false, `${_count}: End of str return false`);
+    let rc;
+	if (ptr[0]=='*')
     {
         let i;
-        for (i = pi; i < ptr.length && ptr[i]=='*'; i++) // count the number of consecutive '*'
+        for (i = 0; i < ptr.length && ptr[i]=='*'; i++) // count the number of consecutive '*'
             ;
-        E.debug(`4.0: pi:${pi} i: ${i} str[${si}]=${str[si]} ptr[${i}]=${ptr[i]}`);
-        return E._strexists_wc_recusive(str.substring(si), 0, ptr.substring(i+1));
+		E.debug(`${_count}: * ${i}`);
+        return E.debug_rc(_strexists_wc_recusive(str, ptr.substring(i), true), `${_count}: sub* ends, returning ${rc}`);
     }
-    pi = 0;
-    E.debug(`6 E._strexists_wc_recusive(str, ${si+1}, ptr, ${pi})`);
-    return E._strexists_wc_recusive(str, si+1, ptr, pi)
-};
+    if (str[0] == ptr[0] || ptr[0] == '?')
+	{
+        rc = _strexists_wc_recusive(str.substring(1), ptr.substring(1));
+		if (rc || !initial)
+            return E.debug_rc(rc, `${_count}: sub ends, returning: ${rc}`);
+	}
+	if (!initial)
+		return E.debug_rc(false, `${_count}: End middle, returning false`);
+	E.debug(`${_count}: End initial, next`);
+	return _strexists_wc_recusive(str.substring(1), ptr, true);
+}(str, ptr, true);
 
 // API:
 E.types = [
