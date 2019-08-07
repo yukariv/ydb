@@ -8,6 +8,12 @@ describe('interviews', function(){
   describe('wildcards', function() {
     const wildcards = require('./wildcards.js');
     const str = 'my name is inigo montoya, you killed my father, prepare to die';
+	describe('normalize', function() {
+	  const t = (name, str, exp)=>it(name, ()=>assert.equal(wildcards.normalize(str), exp));
+	  t('noast', 'abcd', 'abcd');
+	  t('same', '*ab*12*c*', '*ab*12*c*');
+	  t('normalize', '**a*b***c*d**12***', '*a*b*c*d*12*');
+	});
     describe('needle_in_haystack', function() {
       let t = (name, haystack, n, exp)=>it(name, ()=>assert.equal(wildcards.needle_in_haystack(haystack, n), exp));
       let h = str;
@@ -39,6 +45,7 @@ describe('interviews', function(){
      };
      tests('parts');
      tests('recursive');
+	 tests('recursive_for');
     });
   }); 
   describe('myhash', function() {
