@@ -45,12 +45,14 @@ int str2int(char *str)
 {
   int n;
   int num = 0;
-  int neg = 0;
+  int neg = 1;
+
   while (isspace(*str))
     str++;
+
   if (*str == '-')
   {
-    neg = 1;
+    neg = -1;
     str++;
   }
   if (*str == '+')
@@ -64,10 +66,8 @@ int str2int(char *str)
     num = num*10 + n;
     str++;
   }
-  if (neg)
-    num*=-1;
 
-  return num;
+  return num*neg;
 }
 
 /* Unittests */

@@ -11,6 +11,6 @@
   "license": "",
   "devDependencies": {},
   "dependencies": {
-    "microtime": "^2.1.8"
+    "microtime": ""
   }
 }

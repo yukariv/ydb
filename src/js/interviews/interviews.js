@@ -35,14 +35,14 @@ E.dividers = num=>{
       i++;
   }
   if (!res.length)
-    res.push(_num); // _num is a prime and its only dividor
+    res.push(_num); // original num is a prime and its only dividor
   return res;
 };
 
 // convert string to int and signed. First non-digit is a stop
 E.str2int = str=>{
   let num = 0;
-  let neg = false;
+  let neg = 1;
   str = str.trim(str);
   if (str.length==0)
     return undefined;
@@ -53,7 +53,7 @@ E.str2int = str=>{
   if (str[0] === '-')
   {
     str = str.slice(1);
-    neg = true;
+    neg = -1;
   }
   for (let i = 0; i < str.length; i++)
   {
@@ -62,9 +62,7 @@ E.str2int = str=>{
       break;
     num = num*10 + (+d);
   }
-  if (neg)
-    num = num*(-1);
-  return num;
+  return num*neg;
 };
 
 // Binary search in a sorrted array (arr), where num should be added in order to keep the array sorted
