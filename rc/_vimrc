@@ -8,3 +8,12 @@ set tabstop=4
 set expandtab
 set shiftwidth=2
 
+" tell vim to keep a backup file
+set backup
+
+" tell vim where to put its backup files
+set backupdir=~/tmp
+
+" tell vim where to put swap files
+set dir=~/tmp
+
