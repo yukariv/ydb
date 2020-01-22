@@ -119,8 +119,12 @@ fi
 # yukariv settings:
 export DISPLAY=:0
 alias g=gvim
-alias fcpp='find . -regex ".*\.\(cpp\|h\)" | xargs grep $@'
 cdr()
 {
   DIR=`cdr.js` && echo $DIR && cd $DIR;
 }
+
+# PBI shortcuts
+alias fcpp='find . -regex ".*\.\(cpp\|h\)" | xargs grep $@'
+alias PS='cd /mnt/c/Pbi/PbiShared/Sql/CloudBI'
+alias PC='cd /mnt/c/PbiClients/PowerBIClients'
